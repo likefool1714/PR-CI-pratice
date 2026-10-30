@@ -1,0 +1,24 @@
+name: frontend CI
+
+on:
+  pull_request:
+    branches: [develop]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend-ci.yml'
+  workflow_dispatch:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 코드 가져오기
+        uses: actions/checkout@v7
+      - name: 이미지 빌드
+        run: docker build -t frontend-ci ./frontend
+      - name: 컨테이너 실행
+        run: docker run -d --name frontend -p 8080:80 frontend-ci
+      - name: 페이지 응답 확인
+        run: |
+          sleep 2
+          curl -fsS http://localhost:8080 | grep "발표 코칭"   # 제목 문구가 없으면 실패

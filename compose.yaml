@@ -1,0 +1,10 @@
+# 내 맥에서 두 서비스를 한 번에 실행: docker compose up --build
+services:
+  backend:
+    build: ./backend          # backend/Dockerfile로 이미지 빌드
+    ports:
+      - "8000:8000"           # 맥의 8000번 → 컨테이너 8000번
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"             # 맥의 8080번 → 컨테이너 80번
